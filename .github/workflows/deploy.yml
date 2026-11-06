@@ -1,0 +1,25 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Deploy
+        run: |
+          ssh user@server "
+          cd /app &&
+          git pull &&
+          systemctl restart app
+          "
